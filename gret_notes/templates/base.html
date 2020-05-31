@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}gret_notes - personal noting app{% endblock %}</title>
+</head>
+
+<body>
+    <h1>gret_notes</h1>
+    <div id="sidebar">
+        {% block sidebar %}
+        <p>
+            <a href="/">Home</a>
+            <a href="/notes/">Notes</a>
+        </p>
+        {% endblock %}
+    </div>
+    <hr>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

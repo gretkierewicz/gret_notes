@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if note_list %}
+        <ul>
+            {% for note in note_list %}
+                <li><a href="/notes/{{ note.id }}/">{{ note.body }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No notes to display.</p>
+    {% endif %}
+{% endblock %}
