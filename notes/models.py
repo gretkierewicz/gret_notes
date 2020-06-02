@@ -1,9 +1,12 @@
+import datetime
+
 from django.db import models
 
 
 class Note(models.Model):
-    body = models.CharField(max_length=500)
-    create_time = models.DateTimeField('date created')
+    title = models.CharField(max_length=128)
+    body = models.CharField(max_length=2048)
+    create_time = models.DateTimeField('date created', default=datetime.datetime.now())
 
     def __str__(self):
-        return self.body
+        return self.title

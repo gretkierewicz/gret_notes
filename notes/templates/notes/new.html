@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>New note</h2>
+{% with url_address as url('notes:new') %}
+    {% include 'notes/_noteForm.html' %}
+{% endwith %}
+
+{% endblock %}

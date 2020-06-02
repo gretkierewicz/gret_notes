@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit note: {{ note.title }}</h2>
+{% with url_address as url('notes:edit') %}
+    {% include 'notes/_noteForm.html' %}
+{% endwith %}
+
+{% endblock %}

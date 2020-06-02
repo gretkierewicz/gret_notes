@@ -17,7 +17,7 @@ TBD
 
 * **Notes**
     * [x] Basic notes - index page with listing
-        * [ ] new/edit/delete functions
+        * [x] new/edit/delete functions
     * [ ] Tagging - primal organization / searching notes feature
         * [ ] Search notes by tags
         * [ ] Links for fast adding and deleting note's tags

@@ -1,0 +1,15 @@
+<form action="{{ url_address }}" method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    {{ form.title.errors }}
+    {{ form.title.label_tag }}<br>
+    {{ form.title }}<br>
+
+    {{ form.body.errors }}
+    {{ form.body.label_tag }}<br>
+    {{ form.body }}<br>
+
+    <input type="Submit" value="Submit">
+</form>

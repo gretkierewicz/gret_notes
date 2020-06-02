@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h2>Notes</h2>
+    <a href="{% url 'notes:new' %}">New note</a>
     {% if note_list %}
         <ul>
             {% for note in note_list %}
-                <li><a href="/notes/{{ note.id }}/">{{ note.body }}</a></li>
+                <li>
+                    {{ note.title|safe }}
+                    <a href="{% url 'notes:edit' note.id %}">Edit</a>
+                    <a href="{% url 'notes:delete' note.id %}">Delete</a>
+                    <pre>{{ note.body|safe }}</pre>
+                    <p>Created: {{ note.create_time }}</p>
+                </li><hr>
             {% endfor %}
         </ul>
     {% else %}
