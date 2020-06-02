@@ -104,6 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Auth views
+
+LOGIN_REDIRECT_URL = '/notes'
+LOGOUT_REDIRECT_URL = '/auth/login'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

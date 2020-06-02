@@ -16,9 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from . import views
 
 urlpatterns = [
-    path('notes/', include('notes.urls')),
-    path('', include('notes.urls')),
+    path('signup/', views.signup, name='signup'),
+    path('auth/', include('django.contrib.auth.urls'), name='auth'),
+    path('notes/', include('notes.urls'), name='notes'),
+    path('', include('notes.urls'), name='home'),
     path('admin/', admin.site.urls),
 ]

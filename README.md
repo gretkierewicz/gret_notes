@@ -26,7 +26,7 @@ TBD
         * [ ] List by set up expiration time or priority
 
 * **User / Teams:**
-    * [ ] User authorization
+    * [x] Basic user authorization
     * [ ] Basic user teams, team owner interface
     * [ ] Sharing notes with other users 
         * [ ] Sharing any other content with users / teams

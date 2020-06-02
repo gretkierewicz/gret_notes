@@ -10,7 +10,13 @@
         {% block sidebar %}
         <p>
             <a href="/">Home</a>
-            <a href="/notes/">Notes</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'notes:index' %}">Notes</a>
+                <span>Logged in user: <strong>{{ user }}</strong></span>
+                <a href="/auth/logout">Logout</a>
+            {% else %}
+                <a href="/auth/login">LogIn</a>
+            {% endif %}
         </p>
         {% endblock %}
     </div>
