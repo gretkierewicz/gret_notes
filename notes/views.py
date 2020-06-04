@@ -15,7 +15,7 @@ from .models import Note
 def index(request):
 
     utils.clean_orphan_obj_perms()
-    notes = get_objects_for_user(request.user, 'notes.view_note').order_by('-created_at')
+    notes = get_objects_for_user(request.user, 'notes.view_note').order_by('-updated_at')
 
     context = {
         'notes': notes,
@@ -30,8 +30,10 @@ def new(request):
         form = NoteForm(request.POST)
 
         if form.is_valid():
-            note = form.save()
-            # assign all right to the owner
+            note = form.save(commit=False)
+            note.creator = request.user
+            note.save()
+            # assign all right to the creator
             assign_perm('view_note', request.user, note)
             assign_perm('change_note', request.user, note)
             assign_perm('delete_note', request.user, note)
@@ -54,7 +56,9 @@ def edit(request, note_id):
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
-            form.save()
+            note = form.save(commit=False)
+            note.updated_at = datetime.datetime.now()
+            note.save()
             add_message(request, messages.INFO, 'Note edited succesfuly.')
             return redirect('notes:index')
         else:

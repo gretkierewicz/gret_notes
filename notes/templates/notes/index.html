@@ -34,7 +34,7 @@
                         <span style="color: grey;">Delete</span>
                     {% endif %}
                     <pre>{{ note.body|safe }}</pre>
-                    <p>Created: {{ note.created_at }}</p>
+                    <p>Last update at {{ note.updated_at }} || Created at {{ note.created_at }} by {{ note.creator }}</p>
                 </li><hr>
             {% endfor %}
         </ul>
