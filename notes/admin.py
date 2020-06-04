@@ -2,4 +2,14 @@ from django.contrib import admin
 
 from .models import Note
 
-admin.site.register(Note)
+from guardian.admin import GuardedModelAdmin
+
+
+class NoteAdmin(GuardedModelAdmin):
+    list_display = ('title', 'body', 'created_at', 'id')
+    search_fields = ('title', 'created_at')
+    ordering = ('-created_at',)
+    date_hierarchy = 'created_at'
+
+
+admin.site.register(Note, NoteAdmin)

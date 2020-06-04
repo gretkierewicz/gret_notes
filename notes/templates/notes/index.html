@@ -1,21 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load guardian_tags %}
+
     <h2>Notes</h2>
-    <a href="{% url 'notes:new' %}">New note</a>
-    {% if note_list %}
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'notes:new' %}">New note</a>
+    {% endif %}
+
+    {% if notes %}
         <ul>
-            {% for note in note_list %}
+            {% for note in notes %}
+            {% get_obj_perms request.user for note as "note_perms" %}
                 <li>
                     {{ note.title|safe }}
-                    <a href="{% url 'notes:edit' note.id %}">Edit</a>
-                    <a href="{% url 'notes:delete' note.id %}">Delete</a>
+                    {% if 'change_note' in note_perms %}
+                        <a href="{% url 'notes:edit' note.id %}">Edit</a>
+                    {% endif %}
+                    {% if 'delete_note' in note_perms %}
+                        <span id="del_note({{ note.id }})" style="display: inline;">
+			                <a href="#" onclick="show_hide('confirm_del_note({{ note.id }})', 'del_note({{ note.id }})'); return false;">Delete</a>
+		                </span>
+                        <strong><span id="confirm_del_note({{ note.id }})" style="display: none;">
+                            Confirm deleting note:
+                            <a style="color: red;" href="{% url 'notes:delete' note.id %}">Yes</a>
+                            /
+                            <a href="#" onclick="show_hide('del_note({{ note.id }})', 'confirm_del_note({{ note.id }})'); return false;">No</a>
+                        </span></strong>
+                    {% endif %}
                     <pre>{{ note.body|safe }}</pre>
-                    <p>Created: {{ note.create_time }}</p>
+                    <p>Created: {{ note.created_at }}</p>
                 </li><hr>
             {% endfor %}
         </ul>
     {% else %}
         <p>No notes to display.</p>
     {% endif %}
+
+	<script type="text/javascript" >
+		function show_hide(show_id, hide_id){
+			document.getElementById(show_id).style.display = 'inline';
+			document.getElementById(hide_id).style.display = 'none';
+        }
+	</script>
 {% endblock %}

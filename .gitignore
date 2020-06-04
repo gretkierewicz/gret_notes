@@ -4,3 +4,4 @@ __pycache__
 db.sqlite3
 secured_data.py
 sqlite3.exe
+*migrations/

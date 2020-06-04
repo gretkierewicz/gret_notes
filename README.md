@@ -16,28 +16,33 @@ TBD
 ## Features:
 
 * **Notes**
-    * [x] Basic notes - index page with listing
-        * [x] new/edit/delete functions
+    * [X] Basic notes - index page with listing
+        * [X] new/edit/delete functions
     * [ ] Tagging - primal organization / searching notes feature
         * [ ] Search notes by tags
         * [ ] Links for fast adding and deleting note's tags
     * [ ] Grouping - more organization for your notes (to allow sharing the whole group)
     * [ ] Pinup - fast links to most important/urgent cases
         * [ ] List by set up expiration time or priority
+    * [ ] Dividing notes into sections with different permissions per user for each section
+    * [ ] Priority / flags / statuses for notes
 
 * **User / Teams:**
-    * [x] Basic user authorization
-    * [ ] Basic user teams, team owner interface
-    * [ ] Sharing notes with other users 
-        * [ ] Sharing any other content with users / teams
-    * [ ] Dividing notes into sections with different privileges / owners for each section
-    * [ ] Prioritizing notes / flags / statuses / votes
+    * [X] Basic user authorization - [Django authentication system](https://docs.djangoproject.com/en/3.0/topics/auth/default/)
+        * [ ] Groups management interface
+    * [X] Object permissions for users - [django.guardian package](https://django-guardian.readthedocs.io)
+        * [ ] Transferring notes / groups to another user
+        * [ ] Object permissions for groups
 
 * **Other:**
+    * [ ] Error screens
+    * [ ] Implementing rich text editor
     * [ ] Checklists / Next step lists (stand alone from notes)
         * [ ] Checklists / Next step lists - build into notes
-    * [ ] Storage administration 
+    * [ ] Data serialization - moving bunch of notes system 
 
-## Sources of knowledge:
+## Main sources of knowledge:
 
 * https://docs.djangoproject.com
+* https://hackersandslackers.com
+* https://django-guardian.readthedocs.io

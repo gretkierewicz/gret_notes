@@ -3,13 +3,11 @@
 
     {{ form.non_field_errors }}
 
-    {{ form.title.errors }}
-    {{ form.title.label_tag }}<br>
-    {{ form.title }}<br>
-
-    {{ form.body.errors }}
-    {{ form.body.label_tag }}<br>
-    {{ form.body }}<br>
+    {% for field in form %}
+        {{ field.errors }}
+        {{ field.label_tag }}<br>
+        {{ field }}<br>
+    {% endfor %}
 
     <input type="Submit" value="Submit">
 </form>
