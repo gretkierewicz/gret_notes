@@ -17,6 +17,8 @@
                     {{ note.title|safe }}
                     {% if 'change_note' in note_perms %}
                         <a href="{% url 'notes:edit' note.id %}">Edit</a>
+                    {% else %}
+                        <span style="color: grey;">Edit</span>
                     {% endif %}
                     {% if 'delete_note' in note_perms %}
                         <span id="del_note({{ note.id }})" style="display: inline;">
@@ -28,6 +30,8 @@
                             /
                             <a href="#" onclick="show_hide('del_note({{ note.id }})', 'confirm_del_note({{ note.id }})'); return false;">No</a>
                         </span></strong>
+                    {% else %}
+                        <span style="color: grey;">Delete</span>
                     {% endif %}
                     <pre>{{ note.body|safe }}</pre>
                     <p>Created: {{ note.created_at }}</p>
