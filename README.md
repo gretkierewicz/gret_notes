@@ -18,7 +18,7 @@ TBD
 * **Notes**
     * [X] Basic notes - index page with listing
         * [X] new/edit/delete functions
-    * [ ] Tagging - primal organization / searching notes feature
+    * [X] Tagging - primal note's organization - [django-taggit package](https://django-taggit.readthedocs.io/en/latest/index.html)
         * [ ] Search notes by tags
         * [ ] Links for fast adding and deleting note's tags
     * [ ] Grouping - more organization for your notes (to allow sharing the whole group)
@@ -30,11 +30,13 @@ TBD
 * **User / Teams:**
     * [X] Basic user authorization - [Django authentication system](https://docs.djangoproject.com/en/3.0/topics/auth/default/)
         * [ ] Groups management interface
-    * [X] Object permissions for users - [django.guardian package](https://django-guardian.readthedocs.io)
+    * [X] Object permissions for users - [django-guardian package](https://django-guardian.readthedocs.io)
         * [ ] Transferring notes / groups to another user
         * [ ] Object permissions for groups
+    * [ ] Profile page
 
 * **Other:**
+    * [ ] Filters for displayed objects
     * [ ] Error screens
     * [ ] Implementing rich text editor
     * [ ] Checklists / Next step lists (stand alone from notes)

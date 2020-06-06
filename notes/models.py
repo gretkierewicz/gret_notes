@@ -3,6 +3,8 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
+from taggit.managers import TaggableManager
+
 
 class Note(models.Model):
     title = models.CharField(max_length=128)
@@ -10,6 +12,8 @@ class Note(models.Model):
     created_at = models.DateTimeField('date created', default=datetime.datetime.now())
     updated_at = models.DateTimeField('date updated', default=datetime.datetime.now())
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    tags = TaggableManager()
 
     def __str__(self):
         return self.title
+

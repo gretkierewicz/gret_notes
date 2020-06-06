@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'taggit',
     'notes.apps.NotesConfig',
     'guardian',
     'django.contrib.admin',

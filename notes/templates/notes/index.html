@@ -34,7 +34,12 @@
                         <span style="color: grey;">Delete</span>
                     {% endif %}
                     <pre>{{ note.body|safe }}</pre>
-                    <p>Last update at {{ note.updated_at }} || Created at {{ note.created_at }} by {{ note.creator }}</p>
+                    {% if note.tags.all %}
+                        <p>
+                            Tags: {{ note.tags.names|join:", " }}
+                        </p>
+                    {% endif %}
+                    <p>Last update at {{ note.updated_at }} || Created at {{ note.created_at }} by {{ note.creator|safe }}</p>
                 </li><hr>
             {% endfor %}
         </ul>

@@ -33,7 +33,9 @@ def new(request):
             note = form.save(commit=False)
             note.creator = request.user
             note.save()
-            # assign all right to the creator
+            # save m2m for taggit's tags
+            form.save_m2m()
+            # assign all rights to the creator
             assign_perm('view_note', request.user, note)
             assign_perm('change_note', request.user, note)
             assign_perm('delete_note', request.user, note)
@@ -59,6 +61,8 @@ def edit(request, note_id):
             note = form.save(commit=False)
             note.updated_at = datetime.datetime.now()
             note.save()
+            # save m2m for taggit's tags
+            form.save_m2m()
             add_message(request, messages.INFO, 'Note edited succesfuly.')
             return redirect('notes:index')
         else:
@@ -66,13 +70,14 @@ def edit(request, note_id):
             return redirect('notes:index')
     # GET method - populate form with note data
     else:
-        form = NoteForm(initial={
-            'title': note.title,
-            'body': note.body,
-        })
         context = {
             'note': note,
-            'form': form,
+            # pre-populate note's form when editing
+            'form': NoteForm(initial={
+                'title': note.title,
+                'body': note.body,
+                'tags': ', '.join(list(note.tags.names())),
+            }),
         }
         return render(request, 'notes/edit.html', context)
 
@@ -82,6 +87,8 @@ def delete(request, note_id):
 
     note = get_object_or_404(Note, pk=note_id)
     if note:
+        # not sure if clear is necessary, left just in case
+        note.tags.clear()
         note.delete()
         add_message(request, messages.INFO, 'Note deleted succesfuly.')
     return redirect('notes:index')
