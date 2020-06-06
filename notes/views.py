@@ -13,17 +13,25 @@ from .models import Note
 
 
 def index(request):
+    """
+    List of user's notes with links to permitted actions
+    :param request: HTTP request.
+    """
 
     utils.clean_orphan_obj_perms()
-    notes = get_objects_for_user(request.user, 'notes.view_note').order_by('-updated_at')
 
     context = {
-        'notes': notes,
+        'notes': get_objects_for_user(request.user, 'notes.view_note').order_by('-updated_at'),
     }
     return render(request, 'notes/index.html', context)
 
 
 def new(request):
+    """
+    POST: Create new note for currently logged in user, and give it permissions.
+    GET: Display empty note form.
+    :param request: HTTP request.
+    """
 
     # POST method - create new note
     if request.method == 'POST':
@@ -51,6 +59,12 @@ def new(request):
 
 @permission_required_or_403('notes.change_note', (Note, 'id', 'note_id'))
 def edit(request, note_id):
+    """
+    POST: Edit form for selected note.
+    GET: Display note form populated with note's data.
+    :param request: HTTP request.
+    :param note_id: Selected note's ID.
+    """
 
     note = get_object_or_404(Note, pk=note_id)
 
@@ -84,6 +98,11 @@ def edit(request, note_id):
 
 @permission_required_or_403('notes.delete_note', (Note, 'id', 'note_id'))
 def delete(request, note_id):
+    """
+    Delete selected note.
+    :param request: HTTP request.
+    :param note_id: Selected note's ID.
+    """
 
     note = get_object_or_404(Note, pk=note_id)
     if note:
