@@ -19,6 +19,7 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
+    path('tags/', include('tags.urls'), name='tags'),
     path('signup/', views.signup, name='signup'),
     path('auth/', include('django.contrib.auth.urls'), name='auth'),
     path('notes/', include('notes.urls'), name='notes'),

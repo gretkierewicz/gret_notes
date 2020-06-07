@@ -15,11 +15,13 @@
             {% get_obj_perms request.user for note as "note_perms" %}
                 <li>
                     {{ note.title|safe }}
+
                     {% if 'change_note' in note_perms %}
                         <a href="{% url 'notes:edit' note.id %}">Edit</a>
                     {% else %}
                         <span style="color: grey;">Edit</span>
                     {% endif %}
+
                     {% if 'delete_note' in note_perms %}
                         <span id="del_note({{ note.id }})" style="display: inline;">
 			                <a href="#" onclick="show_hide('confirm_del_note({{ note.id }})', 'del_note({{ note.id }})'); return false;">Delete</a>
@@ -33,6 +35,7 @@
                     {% else %}
                         <span style="color: grey;">Delete</span>
                     {% endif %}
+
                     <pre>{{ note.body|safe }}</pre>
                     {% if note.tags.all %}
                         <p>

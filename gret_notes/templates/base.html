@@ -12,6 +12,7 @@
             <a href="/">Home</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'notes:index' %}">Notes</a>
+                <a href="{% url 'tags:index' %}">Tags</a>
                 <span>Logged in user: <strong>{{ user }}</strong></span>
                 <a href="/auth/logout">Logout</a>
             {% else %}

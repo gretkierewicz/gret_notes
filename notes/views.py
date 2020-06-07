@@ -18,7 +18,7 @@ def index(request):
     :param request: HTTP request.
     """
 
-    utils.clean_orphan_obj_perms()
+#    utils.clean_orphan_obj_perms()
 
     context = {
         'notes': get_objects_for_user(request.user, 'notes.view_note').order_by('-updated_at'),
@@ -49,6 +49,9 @@ def new(request):
             assign_perm('view_note', request.user, note)
             assign_perm('change_note', request.user, note)
             assign_perm('delete_note', request.user, note)
+            # assign view rights for all the tags used
+            for tag in note.tags.all():
+                assign_perm('view_guardedtag', request.user, tag)
             add_message(request, messages.INFO, 'Note created succesfuly.')
             return redirect('notes:index')
         else:
@@ -74,11 +77,14 @@ def edit(request, note_id):
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
-            note = form.save(commit=False)
+            form.save(commit=False)
             note.updated_at = datetime.datetime.utcnow()
             note.save()
             # save m2m for taggit's tags
             form.save_m2m()
+            # assign view rights for all the tags used
+            for tag in note.tags.all():
+                assign_perm('view_guardedtag', request.user, tag)
             add_message(request, messages.INFO, 'Note edited succesfuly.')
             return redirect('notes:index')
         else:

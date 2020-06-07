@@ -19,6 +19,7 @@ TBD
     * [X] Basic notes - index page with listing
         * [X] new/edit/delete functions
     * [X] Tagging - primal note's organization - [django-taggit package](https://django-taggit.readthedocs.io/en/latest/index.html)
+        * [X] Delete tag (with option to clear user's notes from it)
         * [ ] Search notes by tags
         * [ ] Links for fast adding and deleting note's tags
     * [ ] Grouping - more organization for your notes (to allow sharing the whole group)
