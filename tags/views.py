@@ -43,7 +43,7 @@ def edit(request, tag_id):
 def delete(request, tag_id):
     """
     Delete selected tag - gives away view permission, deletes from user's notes,
-    and erases tag from DB if noone is using it.
+    and erases tag from DB if no one is using it.
     :param tag_id: Selected tag's ID.
     :param request: HTTP request.
     """
@@ -55,5 +55,9 @@ def delete(request, tag_id):
     remove_perm('view_guardedtag', request.user, tag)
     if notes:
         add_message(request, messages.INFO, 'Tag removed from note(s).')
+
+    # if no one is using this tag - clear db from it
+    if not Note.objects.filter(tags__name__in=[tag.name]).all():
+        GuardedTag.objects.get(pk=tag_id).delete()
 
     return redirect('tags:index')
