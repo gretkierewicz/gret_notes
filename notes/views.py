@@ -40,6 +40,8 @@ def new(request):
         if form.is_valid():
             note = form.save(commit=False)
             note.creator = request.user
+            note.created_at = datetime.datetime.utcnow()
+            note.updated_at = datetime.datetime.utcnow()
             note.save()
             # save m2m for taggit's tags
             form.save_m2m()
@@ -50,7 +52,7 @@ def new(request):
             add_message(request, messages.INFO, 'Note created succesfuly.')
             return redirect('notes:index')
         else:
-            add_message(request, messages.INFO, 'Something gone wrong!.')
+            add_message(request, messages.INFO, 'Something gone wrong!')
             return redirect('notes:index')
     # GET method - display clean form
     else:
@@ -73,7 +75,7 @@ def edit(request, note_id):
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
             note = form.save(commit=False)
-            note.updated_at = datetime.datetime.now()
+            note.updated_at = datetime.datetime.utcnow()
             note.save()
             # save m2m for taggit's tags
             form.save_m2m()
@@ -90,7 +92,7 @@ def edit(request, note_id):
             'form': NoteForm(initial={
                 'title': note.title,
                 'body': note.body,
-                'tags': ', '.join(list(note.tags.names())),
+                'tags': ' '.join(list(note.tags.names())),
             }),
         }
         return render(request, 'notes/edit.html', context)
