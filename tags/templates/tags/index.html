@@ -10,28 +10,39 @@
             {% for tag in tags %}
             {% get_obj_perms request.user for tag as "tag_perms" %}
                 <li>
-                    {{ tag.name|safe }}
+                    {% if edit_tag_id != tag.id %}
+                        {{ tag.name|safe }}
 
-                    {% if 'view_guardedtag' in tag_perms %}
-                        <a href="{% url 'tags:edit' tag.id %}">Edit</a>
+                        {% if 'view_guardedtag' in tag_perms %}
+                            <a href="{% url 'tags:edit' tag.id %}">Edit</a>
+                        {% else %}
+                            <span style="color: grey;">Edit</span>
+                        {% endif %}
+
+                        {% if 'view_guardedtag' in tag_perms %}
+                            <span id="del_tag({{ tag.id }})" style="display: inline;">
+                                <a href="#" onclick="show_hide('confirm_del_tag({{ tag.id }})', 'del_tag({{ tag.id }})'); return false;">Delete</a>
+                            </span>
+                            <strong><span id="confirm_del_tag({{ tag.id }})" style="display: none;">
+                                Confirm deleting tag:
+                                <a style="color: red;" href="{% url 'tags:delete' tag.id %}">Yes</a>
+                                /
+                                <a href="#" onclick="show_hide('del_tag({{ tag.id }})', 'confirm_del_tag({{ tag.id }})'); return false;">No</a>
+                            </span></strong>
+                        {% else %}
+                            <span style="color: grey;">Delete</span>
+                        {% endif %}
                     {% else %}
-                        <span style="color: grey;">Edit</span>
-                    {% endif %}
+                        <form action="{% url 'tags:edit' tag.id %}" method="post">
+                            {% csrf_token %}
 
-                    {% if 'view_guardedtag' in tag_perms %}
-                        <span id="del_tag({{ tag.id }})" style="display: inline;">
-			                <a href="#" onclick="show_hide('confirm_del_tag({{ tag.id }})', 'del_tag({{ tag.id }})'); return false;">Delete</a>
-		                </span>
-                        <strong><span id="confirm_del_tag({{ tag.id }})" style="display: none;">
-                            Confirm deleting tag:
-                            <a style="color: red;" href="{% url 'tags:delete' tag.id %}">Yes</a>
-                            /
-                            <a href="#" onclick="show_hide('del_tag({{ tag.id }})', 'confirm_del_tag({{ tag.id }})'); return false;">No</a>
-                        </span></strong>
-                    {% else %}
-                        <span style="color: grey;">Delete</span>
-                    {% endif %}
+                            {{ form.non_field_errors }}
 
+                            {{ form.name.errors }}
+                            {{ form.name }}
+                            <input type="submit" value="Submit">
+                        </form>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

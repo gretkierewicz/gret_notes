@@ -7,9 +7,6 @@ class TagForm(ModelForm):
     class Meta:
         model = Tag
         fields = ['name']
-        labels = {
-            'name': 'Edit'
-        }
         widgets = {
-            'name': TextInput(attrs={'size': 32, 'required': True})
+            'name': TextInput(attrs={'size': 24})
         }
