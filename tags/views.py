@@ -38,13 +38,27 @@ def edit(request, tag_id):
 
     old_tag = get_object_or_404(GuardedTag, pk=tag_id)
     new_tag = GuardedTag()
+    tag_list = []
 
     # POST method - edit existing tag
     if request.method == 'POST':
         form = TagForm(request.POST, instance=new_tag)
-        # if form is valid, there is no such tag in db - create new one
+        # if form is valid, parse string into tag names
         if form.is_valid():
-            form.save()
+            tag_words = parse_tags(form.instance.name)
+            # in case of more than one name - make a list of tags, otherwise search for one tag or create one
+            if len(tag_words) > 1:
+                for word in tag_words:
+                    tag = GuardedTag.objects.filter(name=word).first()
+                    if not tag:
+                        tag = GuardedTag(name=word, slug=word)
+                        tag.save()
+                    tag_list.append(tag)
+            else:
+                new_tag = GuardedTag.objects.filter(name=tag_words[0]).first()
+                if new_tag is None:
+                    form.save()
+
         elif 'Tag with this Name already exists.' in form.errors['name']:
             new_tag = GuardedTag.objects.filter(name=form.instance.name).first()
             # if there is no change provided - just redirect to index
@@ -56,15 +70,18 @@ def edit(request, tag_id):
             new_tag = None
 
         # deletes permission for the old tag and gives to the new one
-        if new_tag is not None:
-            assign_perm('view_guardedtag', request.user, new_tag)
+        if new_tag is not None or len(tag_list) >= 1:
+            if not tag_list:
+                tag_list.append(new_tag)
             remove_perm('view_guardedtag', request.user, old_tag)
             # check for notes with the old tag and replace it with the new one
             notes = Note.objects.filter(creator=request.user, tags__name__in=[old_tag.name]).distinct()
             if notes:
                 for note in notes:
                     note.tags.remove(old_tag)
-                    note.tags.add(new_tag)
+                    for tag in tag_list:
+                        assign_perm('view_guardedtag', request.user, tag)
+                        note.tags.add(tag)
                 add_message(request, messages.INFO, 'Tag changed and replaced in note(s).')
                 return redirect('tags:index')
 
