@@ -76,6 +76,8 @@ def edit(request, tag_id):
             remove_perm('view_guardedtag', request.user, old_tag)
             # check for notes with the old tag and replace it with the new one
             notes = Note.objects.filter(creator=request.user, tags__name__in=[old_tag.name]).distinct()
+            # for safety reason - exclude notes without change perm (even though creator should always has it)
+            notes = get_objects_for_user(request.user, 'notes.change_note', klass=notes)
             if notes:
                 for note in notes:
                     note.tags.remove(old_tag)
