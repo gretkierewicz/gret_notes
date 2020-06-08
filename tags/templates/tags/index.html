@@ -11,7 +11,9 @@
             {% get_obj_perms request.user for tag as "tag_perms" %}
                 <li>
                     {% if edit_tag_id != tag.id %}
-                        {{ tag.name|safe }}
+                        {% with tags=tag.name %}
+                            <a href="{% url 'notes:tagged' tags %}">{{ tag.name|safe }}</a>
+                        {% endwith %}
 
                         {% if 'view_guardedtag' in tag_perms %}
                             <a href="{% url 'tags:edit' tag.id %}">Edit</a>

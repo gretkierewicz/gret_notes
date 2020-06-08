@@ -12,17 +12,32 @@ from .forms import NoteForm
 from .models import Note
 
 
-def index(request):
+def index(request, tags=None):
     """
     List of user's notes with links to permitted actions
+    :param tags: Exceptional list of tags or one tag
     :param request: HTTP request.
     """
 
-#    utils.clean_orphan_obj_perms()
+    notes = get_objects_for_user(request.user, 'notes.view_note')
 
-    context = {
-        'notes': get_objects_for_user(request.user, 'notes.view_note').order_by('-updated_at'),
-    }
+    if tags is None:
+        context = {
+            'notes': notes.order_by('-updated_at'),
+        }
+    elif isinstance(tags, list):
+        context = {
+            'notes': notes.filter(
+                tags__name__in=tags
+            ).order_by('-updated_at'),
+        }
+    else:
+        context = {
+            'notes': notes.filter(
+                tags__name__exact=tags
+            ).order_by('-updated_at'),
+        }
+
     return render(request, 'notes/index.html', context)
 
 
