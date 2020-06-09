@@ -3,42 +3,49 @@ import datetime
 from django.contrib import messages
 from django.contrib.messages import add_message
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 
 from guardian import utils
 from guardian.decorators import permission_required_or_403
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
+from urllib.parse import urlencode
+
 from .forms import NoteForm
 from .models import Note
 
 
-def index(request, tags=None):
+def index(request):
     """
-    List of user's notes with links to permitted actions
-    :param tags: Exceptional list of tags or one tag
+    List of user's notes with links to permitted actions.
+    Expanded with option to filter notes with list of tags.
+    :GET/POST param tags: list of tag's names to filter with.
     :param request: HTTP request.
     """
 
     notes = get_objects_for_user(request.user, 'notes.view_note')
 
-    if tags is None:
-        context = {
-            'notes': notes.order_by('-updated_at'),
-        }
-    elif isinstance(tags, list):
-        context = {
-            'notes': notes.filter(
-                tags__name__in=tags
-            ).order_by('-updated_at'),
-        }
+    # POST method - from tags index's filter form
+    if request.method == 'POST':
+        tags = request.POST.getlist('tags')
+        if tags:
+            # convert tags into query string (doseq = True! as tags is a list)
+            return redirect(reverse('notes:tagged') + '?' + urlencode({'tags': tags}, doseq=True))
+        else:
+            # with empty form - display notes with no Tags at all
+            return render(request, 'notes/index.html', context={
+                'notes': notes.filter(tags__exact=None).order_by('-updated_at')
+            })
+    # GET method - look for tags in notes and display them
     else:
-        context = {
-            'notes': notes.filter(
-                tags__name__exact=tags
-            ).order_by('-updated_at'),
-        }
+        tags = request.GET.getlist('tags')
+        if tags:
+            filtered_notes = notes.filter(tags__name__in=tags)
+            return render(request, 'notes/index.html', context={'notes': filtered_notes.order_by('-updated_at'), })
+        # with no tags in GET req, display all notes with view perm
+        else:
+            return render(request, 'notes/index.html', context={'notes': notes.order_by('-updated_at'), })
 
-    return render(request, 'notes/index.html', context)
 
 
 def new(request):

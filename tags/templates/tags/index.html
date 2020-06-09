@@ -7,12 +7,20 @@
 
     {% if tags %}
         <ul>
+            {% if not edit_tag_id %}
+                <form action="{% url 'notes:index' %}" method="post" novalidate>
+                {% csrf_token %}
+            {% endif %}
             {% for tag in tags %}
             {% get_obj_perms request.user for tag as "tag_perms" %}
                 <li>
+                    {% if not edit_tag_id %}
+                        <input type="checkbox" name="tags" value="{{ tag.name }}">
+                    {% endif %}
+
                     {% if edit_tag_id != tag.id %}
                         {% with tags=tag.name %}
-                            <a href="{% url 'notes:tagged' tags %}">{{ tag.name|safe }}</a>
+                            <a href="{% url 'notes:tagged' %}?tags={{ tags }}">{{ tag.name|safe }}</a>
                         {% endwith %}
 
                         {% if 'view_guardedtag' in tag_perms %}
@@ -47,6 +55,10 @@
                     {% endif %}
                 </li>
             {% endfor %}
+            {% if not edit_tag_id %}
+                <br><input type="Submit" value="Look for notes with any of selected tags">
+                </form>
+            {% endif %}
         </ul>
     {% else %}
         <p>No tags to display.</p>

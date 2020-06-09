@@ -21,7 +21,7 @@ TBD
     * [X] Tagging - primal note's organization - [django-taggit package](https://django-taggit.readthedocs.io/en/latest/index.html)
         * [X] Edit tag (replacing old one with new tag(s) in user's notes)
         * [X] Delete tag (clearing user's notes from it too)
-        * [ ] Search notes by tags
+        * [X] Search notes by tag(s)
         * [ ] Links for fast adding and deleting note's tags
     * [ ] Grouping - more organization for your notes (to allow sharing the whole group)
     * [ ] Pinup - fast links to most important/urgent cases
