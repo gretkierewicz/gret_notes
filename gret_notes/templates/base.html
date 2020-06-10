@@ -1,40 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>{% block title %}gret_notes - personal noting app{% endblock %}</title>
-</head>
+    <head>
+        <title>gret_notes - personal noting app</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    </head>
 
-<body>
-    <h1>gret_notes</h1>
-    <div id="sidebar">
-        {% block sidebar %}
-        <p>
-            <a href="/">Home</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'notes:index' %}">Notes</a>
-                <a href="{% url 'tags:index' %}">Tags</a>
-                <span>Logged in user: <strong>{{ user }}</strong></span>
-                <a href="/auth/logout">Logout</a>
-            {% else %}
-                <a href="/auth/login">LogIn</a>
-            {% endif %}
-        </p>
-        {% endblock %}
-    </div>
-    <hr>
-    <div id="content">
-        {% if messages %}
-            <ul class="messages">
-                {% for msg in messages %}
-                <li>
-                    <div class="alert alert-{{msg.level_tag}}" role="alert">
-                    {{msg.message}}
+    <body class="bg-dark">
+        <div class="container py-2 bg-dark">
+            <div class="jumbotron text-center py-5 my-1">
+                <h1>Gret Notes</h1>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="collapse navbar-collapse">
+                    <div class="navbar-nav mb-1 mr-auto">
+                        <a class="nav-item nav-link active" href="/">Home</a>
+                        {% if user.is_authenticated %}
+                            <a class="nav-item nav-link" href="{% url 'notes:index' %}">Notes</a>
+                            <a class="nav-item nav-link" href="{% url 'notes:new' %}">New note</a>
+                            <a class="nav-item nav-link" href="{% url 'tags:index' %}">Tags</a>
+                        {% endif %}
                     </div>
-                </li>
+                    <div class="navbar-nav mr-right">
+                    {% if user.is_authenticated %}
+                        <span class="nav-item nav-link text-success">
+                            <span>Logged in user:</span>
+                            <span><strong>{{ user|safe }}</strong></span>
+                        </span>
+                        <a class="nav-item nav-link text-danger active" href="/auth/logout">Logout</a>
+                    {% else %}
+                        <a class="nav-item nav-link" href="/auth/login">LogIn</a>
+                    {% endif %}
+                    </div>
+                </div>
+            </nav>
+
+            {% if messages %}
+            <div class="alert alert-primary" role="alert">
+                {% for msg in messages %}
+                    {{msg.message}}<br>
                 {% endfor %}
-            </ul>
-        {% endif %}
-        {% block content %}{% endblock %}
-    </div>
-</body>
+            </div>
+            {% endif %}
+
+            <div class="jumbotron py-3">
+                    {% block content %}{% endblock %}
+            </div>
+
+            <div class="jumbotron text-center py-3 my-1">
+                <h6>TBD</h6>
+            </div>
+
+        </div>
+    </body>
+
 </html>
