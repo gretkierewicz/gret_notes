@@ -9,6 +9,6 @@ class NoteForm(ModelForm):
         fields = ['title', 'body', 'tags']
         widgets = {
             'title': TextInput(attrs={'size': 128}),
-            'body': Textarea(attrs={'cols': 130, 'rows': 20}),
+            'body': Textarea(attrs={'cols': 130, 'rows': 15}),
             'tags': TextInput(attrs={'size': 128}),
         }

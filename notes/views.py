@@ -5,7 +5,6 @@ from django.contrib.messages import add_message
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
-from guardian import utils
 from guardian.decorators import permission_required_or_403
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
@@ -45,7 +44,6 @@ def index(request):
         # with no tags in GET req, display all notes with view perm
         else:
             return render(request, 'notes/index.html', context={'notes': notes.order_by('-updated_at'), })
-
 
 
 def new(request):

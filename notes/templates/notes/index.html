@@ -2,50 +2,73 @@
 
 {% block content %}
 {% load guardian_tags %}
-
-    <h2>Notes</h2>
-
-    {% if user.is_authenticated %}
-        <a href="{% url 'notes:new' %}">New note</a>
-    {% endif %}
-
     {% if notes %}
-        <ul>
+        <div>
             {% for note in notes %}
             {% get_obj_perms request.user for note as "note_perms" %}
-                <li>
-                    {{ note.title|safe }}
+                <div class="card border-dark my-2">
+                    <div class="card-header bg-light border-dark d-flex p-2">
+                        <div class="p-2 flex-grow-1">
+                            <span class="btn btn-outline-link disabled text-left ml-n2 text-black">
+                                <h5>{{ note.title|safe }}</h5>
+                            </span>
+                        </div>
+                        <div class="p-2">
+                            <div class="mx-2" style="width: 130px;">
+                            <!-- Delete feature section -->
+                            {% if 'delete_note' in note_perms %}
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-danger float-right ml-1 mr-n2" data-toggle="modal" data-target="#note_{{ note.id }}">
+                                    Delete
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="note_{{ note.id }}" tabindex="-1" role="dialog" aria-labelledby="note_{{ note.id }}_Label" aria-hidden="true">
+                                      <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="note_{{ note.id }}_Label">Confirm deleting note:</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                          <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <p>{{ note.title|safe }}</p>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                                        <a class="btn btn-danger" href="{% url 'notes:delete' note.id %}">Confirm</a>
+                                                  </div>
+                                            </div>
+                                      </div>
+                                </div>
+                            {% else %}
+                                <span class="btn btn-outline-danger disabled float-right ml-1 mr-n2">Delete</span>
+                            {% endif %}
+                            <!-- Edit feature section -->
+                            {% if 'change_note' in note_perms %}
+                                <a class="btn btn-success float-right mx-1" href="{% url 'notes:edit' note.id %}">Edit</a>
+                            {% else %}
+                                <span class="btn btn-outline-success disabled float-right mx-1">Edit</span>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
 
-                    {% if 'change_note' in note_perms %}
-                        <a href="{% url 'notes:edit' note.id %}">Edit</a>
-                    {% else %}
-                        <span style="color: grey;">Edit</span>
-                    {% endif %}
-
-                    {% if 'delete_note' in note_perms %}
-                        <span id="del_note({{ note.id }})" style="display: inline;">
-			                <a href="#" onclick="show_hide('confirm_del_note({{ note.id }})', 'del_note({{ note.id }})'); return false;">Delete</a>
-		                </span>
-                        <strong><span id="confirm_del_note({{ note.id }})" style="display: none;">
-                            Confirm deleting note:
-                            <a style="color: red;" href="{% url 'notes:delete' note.id %}">Yes</a>
-                            /
-                            <a href="#" onclick="show_hide('del_note({{ note.id }})', 'confirm_del_note({{ note.id }})'); return false;">No</a>
-                        </span></strong>
-                    {% else %}
-                        <span style="color: grey;">Delete</span>
-                    {% endif %}
-
-                    <pre>{{ note.body|safe }}</pre>
-                    {% if note.tags.all %}
-                        <p>
-                            Tags: {{ note.tags.names|join:", " }}
+                    <div class="card-body text-dark">
+                        <p class="card-text">
+                        {{ note.body|safe }}
+                        {% if note.tags.all %}
+                            <hr><b>Tags:</b> {{ note.tags.names|join:", " }}
+                        {% endif %}
                         </p>
-                    {% endif %}
-                    <p>Last update at {{ note.updated_at }} || Created at {{ note.created_at }} by {{ note.creator|safe }}</p>
-                </li><hr>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-dark mb-1">
+                        <p class="my-n1 mx-n1">Last update at {{ note.updated_at }} || Created at {{ note.created_at }} by {{ note.creator|safe }}</p>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>No notes to display.</p>
     {% endif %}

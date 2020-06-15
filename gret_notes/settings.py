@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
     'tags.apps.TagsConfig',
     'taggit',
     'notes.apps.NotesConfig',
@@ -43,6 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# Django-crispy-forms pack
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Django-guardian hook
 

@@ -38,6 +38,7 @@ TBD
     * [ ] Profile page
 
 * **Other:**
+    * [X] Better user experience ([Bootstrap](https://getbootstrap.com) with [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/))
     * [ ] Filters for displayed objects
     * [ ] Error screens
     * [ ] Implementing rich text editor
@@ -49,4 +50,4 @@ TBD
 
 * https://docs.djangoproject.com
 * https://hackersandslackers.com
-* https://django-guardian.readthedocs.io
+* https://simpleisbetterthancomplex.com

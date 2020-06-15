@@ -6,41 +6,61 @@
     <h2>Tags</h2>
 
     {% if tags %}
-        <ul>
-            {% if not edit_tag_id %}
-                <form action="{% url 'notes:index' %}" method="post" novalidate>
-                {% csrf_token %}
-            {% endif %}
-            {% for tag in tags %}
-            {% get_obj_perms request.user for tag as "tag_perms" %}
-                <li>
+
+        {% load crispy_forms_tags %}
+
+        {% if not edit_tag_id %}
+            <form action="{% url 'notes:index' %}" method="post" novalidate>
+                <div class="form-check">
+            {% csrf_token %}
+        {% endif %}
+        {% for tag in tags %}
+        {% get_obj_perms request.user for tag as "tag_perms" %}
+            <div class="card bg-transparent">
+                <div class="card-body my-n3 pl-4 pr-3">
                     {% if not edit_tag_id %}
-                        <input type="checkbox" name="tags" value="{{ tag.name }}">
+                        <input class="form-check-input" type="checkbox" name="tags" value="{{ tag.name }}">
                     {% endif %}
 
                     {% if edit_tag_id != tag.id %}
                         {% with tags=tag.name %}
-                            <a href="{% url 'notes:tagged' %}?tags={{ tags }}">{{ tag.name|safe }}</a>
+                            <a href="{% url 'notes:tagged' %}?tags={{ tags }}"><strong>{{ tag.name|safe }}</strong></a>
                         {% endwith %}
 
+                        <!-- Delete feature section -->
                         {% if 'view_guardedtag' in tag_perms %}
-                            <a href="{% url 'tags:edit' tag.id %}">Edit</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger float-right ml-1 mr-n2 btn-sm" data-toggle="modal" data-target="#tag_{{ tag.id }}">
+                                Delete
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="tag_{{ tag.id }}" tabindex="-1" role="dialog" aria-labelledby="tag_{{ tag.id }}_Label" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                        <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <h5 class="modal-title" id="tag_{{ tag.id }}_Label">Confirm deleting tag:</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                  <p>{{ tag.name|safe }}</p>
+                                              </div>
+                                              <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                                    <a class="btn btn-danger" href="{% url 'tags:delete' tag.id %}">Confirm</a>
+                                              </div>
+                                        </div>
+                                  </div>
+                            </div>
                         {% else %}
-                            <span style="color: grey;">Edit</span>
+                            <span class="btn btn-outline-danger disabled float-right ml-1 mr-n2 btn-sm">Delete</span>
                         {% endif %}
-
+                        <!-- Edit feature section -->
                         {% if 'view_guardedtag' in tag_perms %}
-                            <span id="del_tag({{ tag.id }})" style="display: inline;">
-                                <a href="#" onclick="show_hide('confirm_del_tag({{ tag.id }})', 'del_tag({{ tag.id }})'); return false;">Delete</a>
-                            </span>
-                            <strong><span id="confirm_del_tag({{ tag.id }})" style="display: none;">
-                                Confirm deleting tag:
-                                <a style="color: red;" href="{% url 'tags:delete' tag.id %}">Yes</a>
-                                /
-                                <a href="#" onclick="show_hide('del_tag({{ tag.id }})', 'confirm_del_tag({{ tag.id }})'); return false;">No</a>
-                            </span></strong>
+                            <a class="btn btn-success float-right mx-1 btn-sm" href="{% url 'tags:edit' tag.id %}">Edit</a>
                         {% else %}
-                            <span style="color: grey;">Delete</span>
+                            <span class="btn btn-outline-success disabled float-right mx-1 btn-sm">Edit</span>
                         {% endif %}
                     {% else %}
                         <form action="{% url 'tags:edit' tag.id %}" method="post">
@@ -48,18 +68,24 @@
 
                             {{ form.non_field_errors }}
 
-                            {{ form.name.errors }}
-                            {{ form.name }}
-                            <input type="submit" value="Submit">
+                            <div class="d-flex my-n3">
+                                <div class="p-2 flex-grow-1 mt-3">
+                                    {{ form|crispy }}
+                                </div>
+                                <div class="p-2 mt-5">
+                                    <input type="submit" value="Submit" class="btn btn-primary">
+                                </div>
+                            </div>
                         </form>
                     {% endif %}
-                </li>
-            {% endfor %}
-            {% if not edit_tag_id %}
-                <br><input type="Submit" value="Look for notes with any of selected tags">
-                </form>
-            {% endif %}
-        </ul>
+                </div>
+            </div>
+        {% endfor %}
+        {% if not edit_tag_id %}
+                <br><input type="Submit" value="Look for notes with any of selected tags" class="btn btn-primary">
+                </div>
+            </form>
+        {% endif %}
     {% else %}
         <p>No tags to display.</p>
     {% endif %}
