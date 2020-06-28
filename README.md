@@ -39,9 +39,10 @@ TBD
 
 * **Other:**
     * [X] Better user experience ([Bootstrap](https://getbootstrap.com) with [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/))
+    * [X] Implementing rich text editor
     * [ ] Filters for displayed objects
+    * [ ] Different sorting options
     * [ ] Error screens
-    * [ ] Implementing rich text editor
     * [ ] Checklists / Next step lists (stand alone from notes)
         * [ ] Checklists / Next step lists - build into notes
     * [ ] Data serialization - moving bunch of notes system 

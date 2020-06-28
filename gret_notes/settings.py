@@ -28,10 +28,32 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# For summernote
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+#SUMMERNOTE_THEME = 'bs4'
+
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'width': '100%',
+    }
+}
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_summernote',
     'crispy_forms',
     'tags.apps.TagsConfig',
     'taggit',

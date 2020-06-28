@@ -4,7 +4,12 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    {{ form|crispy }}
+    {{ form|crispy|safe }}
 
     <input type="Submit" value="Submit" class="btn btn-primary">
 </form>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote();
+    });
+</script>

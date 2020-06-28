@@ -10,7 +10,7 @@ from tags.models import TaggedWhatever
 
 class Note(models.Model):
     title = models.CharField(max_length=128)
-    body = models.CharField(max_length=2048, blank=True)
+    body = models.CharField(max_length=20480, blank=True)
     created_at = models.DateTimeField('date created', default=datetime.datetime.utcnow)
     updated_at = models.DateTimeField('date updated', default=datetime.datetime.utcnow)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
