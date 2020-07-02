@@ -4,7 +4,7 @@ Project for personalized notes.
 
 ## Test-site on the pythoneverywhere server:
 
-TBD
+http://gret.pythonanywhere.com
 
 ## Idea:
 
