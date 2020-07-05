@@ -33,7 +33,7 @@ http://gret.pythonanywhere.com
     * [X] Basic user authorization - [Django authentication system](https://docs.djangoproject.com/en/3.0/topics/auth/default/)
         * [ ] Groups management interface
     * [X] Object permissions for users - [django-guardian package](https://django-guardian.readthedocs.io)
-        * [ ] Transferring notes / groups to another user
+        * [ ] Transferring (or sharing) notes / groups to another user
         * [ ] Object permissions for groups
     * [ ] Profile page
 
@@ -46,6 +46,8 @@ http://gret.pythonanywhere.com
     * [ ] Checklists / Next step lists (stand alone from notes)
         * [ ] Checklists / Next step lists - build into notes
     * [ ] Data serialization - moving bunch of notes system 
+    * [ ] Changelog for site update's information display
+    * [ ] Moving logic from views to models
 
 ## Main sources of knowledge:
 
