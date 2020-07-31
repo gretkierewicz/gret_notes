@@ -54,3 +54,7 @@ http://gret.pythonanywhere.com
 * https://docs.djangoproject.com
 * https://hackersandslackers.com
 * https://simpleisbetterthancomplex.com
+
+## Screenshots:
+
+![x](/media/screenshots/gret_notes_ss_1.png)
