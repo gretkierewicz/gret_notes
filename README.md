@@ -38,8 +38,8 @@ http://gret.pythonanywhere.com
     * [ ] Profile page
 
 * **Other:**
-    * [X] Better user experience ([Bootstrap](https://getbootstrap.com) with [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/))
-    * [X] Implementing rich text editor
+    * [X] Better user experience - [Bootstrap](https://getbootstrap.com) with [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/)
+    * [X] Implementing rich text editor - [django-summernote](https://github.com/summernote/django-summernote)
     * [ ] Filters for displayed objects
     * [ ] Different sorting options
     * [ ] Error screens
